@@ -4,6 +4,9 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import ApiError from "../utils/apiError.js";
 
+const createToken = user => {
+  return jwt.sign({ uid: user._id }, process.env.SECRET_KEY);
+};
 /**
  * @desc    Create An Account in website
  * @route   @POST /api/v1/auth/sign-up
@@ -12,7 +15,7 @@ import ApiError from "../utils/apiError.js";
 export const signUp = asyncHandler(async (req, res) => {
   const data = req.body;
   const user = await User.create(data);
-  const token = jwt.sign({ uid: user._id }, process.env.SECRET_KEY);
+  const token = createToken(user);
   return res.status(201).json({ user, token });
 });
 
@@ -27,8 +30,6 @@ export const signIn = asyncHandler(async (req, res, next) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return next(new ApiError("Email or Password is Incorrect", 400));
   }
-  const token = jwt.sign({ uid: user._id }, process.env.SECRET_KEY);
+  const token = createToken(user);
   return res.json({ user, token });
 });
-
-
