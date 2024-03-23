@@ -26,8 +26,9 @@ export const getUser = asyncHandler(async (req, res, next) => {
  */
 export const updateUser = asyncHandler(async (req, res) => {
   const { user_id } = req.params;
-  const data = req.body;
-  const user = await User.findOneAndUpdate({ _id: user_id }, data, {
+  const { bio, avatar, name, username } = req.body;
+  const user = await User.findOneAndUpdate({ _id: user_id },
+  bio,username,avatar,name, {
     new: true
   });
   return res.json({ user });
