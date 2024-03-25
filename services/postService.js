@@ -36,8 +36,12 @@ export const getPost = asyncHandler(async (req, res, next) => {
  * @accses @Public
  **/
 export const createPost = asyncHandler(async (req, res, next) => {
-  const data = req.body;
-  const post = await Post.create(data);
+  const { content, images } = req.body;
+  const post = await Post.create({
+    content,
+    images,
+    author: req.token.userInfo.uid
+  });
   if (!post) return next(new ApiError("Cannot create This Post", 400));
   return res.status(201).json(post);
 });
@@ -50,7 +54,7 @@ export const createPost = asyncHandler(async (req, res, next) => {
 
 export const updatePost = asyncHandler(async (req, res, next) => {
   const { post_id } = req.params;
-  const { content, author, like } = req.body;
+  const { content, like } = req.body;
   const post = await Post.findOneAndUpdate(
     { _id: post_id },
     {

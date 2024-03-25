@@ -8,16 +8,6 @@ export const getPostValidator = [
 ];
 export const createPostValidator = [
   check("content").notEmpty().withMessage("Content Required"),
-  check("author")
-    .notEmpty()
-    .withMessage("Author Required")
-    .custom(async (val, { req }) => {
-      if (req.token.userInfo.uid != val) {
-        throw new Error("You're not allow to this route");
-      }
-    }),
-  // .isMongoId()
-  // .withMessage("Invalidat ID")
   validatorMiddleware
 ];
 export const updatePostValidator = [
