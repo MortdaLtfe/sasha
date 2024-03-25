@@ -10,7 +10,12 @@ export const createPostValidator = [
   check("content").notEmpty().withMessage("Content Required"),
   check("author")
     .notEmpty()
-    .withMessage("Author Required"),
+    .withMessage("Author Required")
+    .custom(async (val, { req }) => {
+      if (req.token.userInfo.uid != val) {
+        throw new Error("You're not allow to this route");
+      }
+    }),
   // .isMongoId()
   // .withMessage("Invalidat ID")
   validatorMiddleware
@@ -20,11 +25,33 @@ export const updatePostValidator = [
     .notEmpty()
     .withMessage("post_id Required")
     .isMongoId()
-    .withMessage("Invalid Id"),
+    .withMessage("Invalid Id")
+    .custom(async (val, { req }) => {
+      const user = await Post.findOne({ _id: val });
+      
+      if (
+        req.token.userInfo.uid != user.author &&
+        req.token.userInfo.role != "admin"
+      ) {
+        throw new Error("You're not allow to this route");
+      }
+    }),
   validatorMiddleware
 ];
 export const deletePostValidator = [
-  check("post_id").isMongoId().withMessage("Invalid ID"),
+  check("post_id")
+    .isMongoId()
+    .withMessage("Invalid ID")
+    .custom(async (val, { req }) => {
+      const user = await Post.findOne({ _id: val });
+
+      if (
+        req.token.userInfo.uid != user.author &&
+        req.token.userInfo.role != "admin"
+      ) {
+        throw new Error("You're not allow to this route");
+      }
+    }),
   validatorMiddleware
 ];
 export const addLikeToPostValidator = [
@@ -33,6 +60,11 @@ export const addLikeToPostValidator = [
     .withMessage("like Is required ")
     .isMongoId()
     .withMessage("Invalid ID")
+    .custom(async (val, { req }) => {
+      if (req.token.userInfo.uid != val) {
+        throw new Error("You're not allow to this route");
+      }
+    })
     .custom(async (value, { req }) => {
       const post = await Post.findOne({ _id: req.params.post_id });
       const isLiked = post.likes.find(val => val == req.body.like);
@@ -43,6 +75,19 @@ export const addLikeToPostValidator = [
   validatorMiddleware
 ];
 export const deleteLikeValidator = [
-  check("like_id").isMongoId().withMessage("Invalid ID"),
+  check("like_id")
+    .isMongoId()
+    .withMessage("Invalid ID")
+    .custom(async (val, { req }) => {
+      const user = await Post.findOne({ _id: val }).likes.includes(
+        req.token.userId
+      );
+      if (
+        req.token.userInfo.uid != user.author &&
+        req.token.userInfo.role != "admin"
+      ) {
+        throw new Error("You're not allow to this route");
+      }
+    }),
   validatorMiddleware
 ];
