@@ -6,8 +6,17 @@ import asyncHandler from "express-async-handler";
  * @acsess  @Public
  */
 export const getUsers = async (req, res) => {
-  const results = await User.find();
-  return res.json({ results });
+  // check if page not equal 0 or less
+  const page = req.query.page <= 0 ? 1 : req.query.page;
+  const limit = req.query.limit || 5;
+  const skip = (page - 1) * limit;
+  const results = await User.find().skip(skip).limit(limit);
+  return res.json({
+    limit,
+    page: parseInt(page) || 1,
+    length: results.length,
+    results
+  });
 };
 /**
  * @desc    Get Specific User
@@ -27,10 +36,13 @@ export const getUser = asyncHandler(async (req, res, next) => {
 export const updateUser = asyncHandler(async (req, res) => {
   const { user_id } = req.params;
   const { bio, avatar, name, username } = req.body;
-  const user = await User.findOneAndUpdate({ _id: user_id },
-  bio,username,avatar,name, {
-    new: true
-  });
+  const user = await User.findOneAndUpdate(
+    { _id: user_id },
+    { bio, username, avatar, name },
+    {
+      new: true
+    }
+  );
   return res.json({ user });
 });
 /**

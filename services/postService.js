@@ -7,12 +7,12 @@ import asyncHandler from "express-async-handler";
  * @accses @Public
  **/
 export const getPosts = asyncHandler(async (req, res) => {
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 0;
+  const page = req.query.page <= 0 ? 1 : req.query.page;
+  const limit = req.query.limit || 5;
   const skip = (page - 1) * limit;
   
   const results = await Post.find().skip(skip).limit(limit);
-  return res.json({ page, length: results.length, results});
+  return res.json({ page: parseInt(page)||1, length: results.length, results});
 });
 
 /**
