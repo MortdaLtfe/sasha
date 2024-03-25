@@ -30,11 +30,6 @@ export const getCommentValidator = [
 
 export const createCommentValidator = [
   check("content").notEmpty().withMessage("Content is required"),
-  check("author")
-    .notEmpty()
-    .withMessage("Author is required")
-    .isMongoId()
-    .withMessage("Invalid Author ID "),
   check("post_id")
     .notEmpty()
     .withMessage("Post id is required")
