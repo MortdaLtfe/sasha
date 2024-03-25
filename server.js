@@ -1,7 +1,7 @@
 import express from "express";
 
 import globalMiddleware from "./middlewares/globalErrorMiddleware.js";
-import authorizationMiddleware from "./middlewares/authorizationMiddleware.js";
+import * as authServices from "./services/authService.js";
 import ApiError from "./utils/apiError.js";
 import dbConnect from "./config/dbConnect.js";
 
@@ -22,8 +22,8 @@ dbConnect();
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use("/api/v1/post", authorizationMiddleware, postRoutes);
-app.use("/api/v1/user", authorizationMiddleware, userRoutes);
+app.use("/api/v1/post", authServices.protect, postRoutes);
+app.use("/api/v1/user", authServices.protect, userRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("*", (res, req, next) => {
   return next(new ApiError("Cannot resolve this Page", 404));
