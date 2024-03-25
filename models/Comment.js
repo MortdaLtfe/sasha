@@ -20,11 +20,20 @@ const CommentSchema = new mongoose.Schema(
         type: mongoose.Schema.ObjectId,
         ref: "User"
       }
-    ]
+    ],
+    edited: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );
 
+CommentSchema.pre("findOneAndUpdate", async function (next) {
+  this.set({ edited: true });
+
+  next();
+});
 const CommentModel = mongoose.model("Comment", CommentSchema);
 
 export default CommentModel;

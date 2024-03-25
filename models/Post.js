@@ -17,10 +17,18 @@ const PostSchema = new mongoose.Schema({
       ref: "User"
     }
   ],
+  edited:{
+    type: Boolean,
+    default: false
+  },
 
   images: [{ String }]
 },{ timestamps: true });
+PostSchema.pre("findOneAndUpdate", async function (next) {
+  this.set({ edited: true });
 
+  next();
+});
 const PostModel = mongoose.model("Post", PostSchema);
 
 export default PostModel;
