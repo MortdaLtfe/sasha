@@ -46,3 +46,24 @@ export const signUpValidator = [
   check("bio").isLength({ max: 330 }).withMessage("Max length 330"),
   validatorMiddleware
 ];
+export const changePasswordValidator = [
+  check("password")
+    .notEmpty()
+    .withMessage("Password is reqired")
+    .isLength({ min: 7 })
+    .withMessage("min Password lengrh is 7")
+  ,
+  validatorMiddleware
+];
+export const changeEmailValidator = [
+  check("email")
+    .isEmail()
+    .withMessage("invalid Email")
+    .custom(async email => {
+      const isUsed = await User.findOne({ email });
+      if (isUsed) {
+        throw new Error("Email Already Used");
+      }
+    }),
+  validatorMiddleware
+];

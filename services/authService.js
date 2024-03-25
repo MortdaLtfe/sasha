@@ -46,7 +46,7 @@ export const protect = async (req, res, next) => {
       .json({ message: "You're not authorized, Please Login 1" });
 
   const token = req.headers.authorization.split(" ")[1];
-  
+
   // 1)  Check if token is valid
   const user = await jwt.verify(token, process.env.SECRET_KEY);
 
@@ -62,3 +62,26 @@ export const protect = async (req, res, next) => {
   console.log(user);
   next();
 };
+/**
+ * @desc    Changing Account Password
+ * @route   @POST /api/v1/auth/change-password
+ * @acsess  @Private
+ */
+export const changePassword = asyncHandler(async (req, res, next) => {
+  const password = await bcrypt.hash(req.body.password, 12);
+  const user = await User.findOneAndUpdate(
+    { _id: req.token.userInfo.uid },
+    { password },
+    { new: true }
+  );
+  return res.json(user);
+});
+export const changeEmail = asyncHandler(async (req, res, next) => {
+  const {email} = req.body
+  const user = await User.findOneAndUpdate(
+    { _id: req.token.userInfo.uid },
+    { email },
+    { new: true }
+  );
+  return res.json(user);
+});
