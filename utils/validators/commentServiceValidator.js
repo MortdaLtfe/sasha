@@ -69,7 +69,11 @@ export const updateCommentValidator = [
   validatorMiddleware
 ];
 export const deleteCommentValidator = [
-  check("comment_id").isMongoId().withMessage("Invalid comment id"),
+  check("comment_id").isMongoId().withMessage("Invalid comment id").custom(async (val, { req }) => {
+      if (req.token.userInfo.uid != val && req.token.userInfo.role != "admin") {
+        throw new Error("You're not allow to this route");
+      }
+    }),,
   check("post_id").custom(async postId => {
     const post = await Post.findOne({ _id: postId });
     if (!post) {

@@ -69,7 +69,11 @@ export const updateReplyValidator = [
   validatorMiddleware
 ];
 export const deleteReplyValidator = [
-  check("reply_id").isMongoId().withMessage("Invalid Reply id"),
+  check("reply_id").isMongoId().withMessage("Invalid Reply id").custom(async (val, { req }) => {
+      if (req.token.userInfo.uid != val && req.token.userInfo.role != "admin") {
+        throw new Error("You're not allow to this route");
+      }
+    }),
   check("comment_id").custom(async commentId => {
     const comment = await Comment.findOne({ _id: commentId });
     if (!comment) {
