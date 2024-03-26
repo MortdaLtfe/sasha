@@ -85,16 +85,13 @@ then write `npm i`, then `npm run start:dev`
     password
   }
 ```
+__Important__: if you want to insert An Post/comment etc.., you have to insert `content` to the body
 
 **Post**
 
 if you want to update or delete or Create
 
 `headers: { authorization: token }`
-
-if you want to update or delete or Create enter also
-
-`headers: { content: "First Post in Sasha!, author: user_id" }`
 
 - **GET** /api/v1/post
 - **POST** /api/v1/post
@@ -107,9 +104,6 @@ if you want to update or delete or Create enter also
 if you want to update or delete or Create
 `headers: { authorization: token }`
 
-if you want to Create enter also
-`headers: { content: "First Post in Sasha!", postId: id }`
-
 - **GET** /api/v1/post/:post_id/comment
 - **POST** /api/v1/post/:post_id/comment
 - **GET** /api/v1/post/:post_id/comment/:comment_id
@@ -120,9 +114,6 @@ if you want to Create enter also
 
 if you want to update or delete or Create
 `headers: { authorization: token }`
-
-if you want to Create enter also
-`headers: { content: "First Post in Sasha!", comment_id: id }`
 
 - **GET** /api/v1/post/:post_id/comment/:comment_id/reply
 - **POST** /api/v1/post/:post_id/comment/:comment_id/reply
