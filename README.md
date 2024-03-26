@@ -3,7 +3,13 @@
 **Sasha** is social media Application, Have many Feature that you will know
 
 ---
+### Tools
 
+- **Nodejs** (Runtime)
+- **Express** (freamwork)
+- **MongoDB** (NoSql Database)
+
+---
 ### Feature
 
 - **Authentication - Authorization**
@@ -33,11 +39,6 @@ DATABASE_URL=
 **Info** : The Database is **MongoDB**
 then write `npm i`, then `npm run start:dev`
 
-### Tools
-
-- Nodejs (Runtime)
-- Express (freamwork)
-- MongoDB (NoSql Database)
 
 ### End Points
 
