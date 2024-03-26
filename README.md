@@ -22,11 +22,13 @@ Create a file and name it `config.env` after that fill these Variables
 
 ### `config.env`
 
-`SECRET_KEY=`
+```
+SECRET_KEY=
 
-`PORT=`
+PORT=
 
-`DATABASE_URL=`
+DATABASE_URL=
+```
 
 **Info** : The Database is **MongoDB**
 then write `npm i`, then `npm run start:dev`
@@ -43,34 +45,47 @@ then write `npm i`, then `npm run start:dev`
 
 - POST /api/v1/auth/sign-in
 
-  `{`
-  `  email,`
-  `  password`
-  `}`
+  ```
+  {
+    email,
+    password
+  }
+  ```
 
 - POST /api/v1/auth/sign-up
 
-  `{`
-  `  email,`
-  `  password,`
-  `  username,`
-  `  name,`
-  `  bio,` // optional
-  `  avatar` // optional
-  `}`
+```
+  {
+    email,
+    password,
+    username,
+    name,
+    bio, // optional
+    avatar // optional
+  }
+
+```
 
 - POST /api/v1/auth/change-email
-  `headers: {authorization: token}`
-  `{`
-  `  email`
-  `}`
+  
+```
+  headers: {authorization: token}
+  {
+    email
+  }
+```
+  
 - POST /api/v1/auth/change-password
 
-  `headers: {authorization: token}`
-  `{`
-  `  password`
-  `}`
-  **Post**
+
+```
+  headers: {authorization: token}
+  {
+    password
+  }
+```
+
+**Post**
 
 if you want to update or delete or Create
 
